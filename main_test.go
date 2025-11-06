@@ -3,22 +3,41 @@ package main
 import "testing"
 
 func TestGenerateRandomElements(t *testing.T) {
-	result := generateRandomElements(0)
-	if len(result) != 0 {
-		t.Errorf("generateRandomElements(0) = %d; want 0", len(result))
+	tests := []struct {
+		size     int
+		wantSize int
+	}{
+		{0, 0},
+		{1, 1},
+		{10, 10},
+	}
+
+	for _, tt := range tests {
+		result := generateRandomElements(tt.size)
+		if len(result) != tt.wantSize {
+			t.Errorf("generateRandomElements(%d) = %d; want %d", tt.size, len(result), tt.wantSize)
+		}
 	}
 }
 
 func TestMaximum(t *testing.T) {
-	if got := maximum([]int{}); got != 0 {
-		t.Errorf("maximum([]int{}) = %d; want 0", got)
+	tests := []struct {
+		data []int
+		want int
+	}{
+		{[]int{}, 0},
+		{[]int{5}, 5},
+		{[]int{1, 3, 2}, 3},
+		{[]int{7, 7, 7}, 7},
+		{[]int{10, 2, 5}, 10},
+		{[]int{1, 4, 9}, 9},
+		{[]int{2, 8, 3}, 8},
 	}
 
-	if got := maximum([]int{5}); got != 5 {
-		t.Errorf("maximum([]int{5}) = %d; want 5", got)
-	}
-
-	if got := maximum([]int{1, 3, 2}); got != 3 {
-		t.Errorf("maximum([]int{1, 3, 2}) = %d; want 3", got)
+	for _, tt := range tests {
+		got := maximum(tt.data)
+		if got != tt.want {
+			t.Errorf("maximum(%v) = %d; want %d", tt.data, got, tt.want)
+		}
 	}
 }
